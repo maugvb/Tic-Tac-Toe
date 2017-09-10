@@ -9,24 +9,33 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableHighlight
 } from 'react-native';
 
 export default class TicTacTouch extends Component {
+ constructor(props){
+    super(props)
+    this.state={
+      Pressed: false
+    }
+  }
+  
+  pressFunction(){
+    this.state.Pressed?this.setState({Pressed:false}): this.setState({Pressed:true})
+  }
+  renderHola(){
+   return (<Text style={{marginTop:60}}>Hola</Text>)
+  }
+  renderAdios(){
+    return(<Text style={{marginTop:60}}>Adios</Text>)
+  }
   render() {
+    console.log(this.state.Pressed)
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
+        <TouchableHighlight onPress={()=>this.pressFunction()}>
+          {this.state.Pressed?this.renderHola():this.renderAdios()}
+        </TouchableHighlight>
     );
   }
 }
