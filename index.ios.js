@@ -12,30 +12,12 @@ import {
   View,
   TouchableHighlight
 } from 'react-native';
+import App from './components/App';
 
 export default class TicTacTouch extends Component {
-  constructor(props){
-    super(props)
-    this.state={
-      Pressed: false
-    }
-  }
-  
-  pressFunction(){
-    this.state.Pressed?this.setState({Pressed:false}): this.setState({Pressed:true})
-  }
-  renderHola(){
-   return (<Text style={{marginTop:60}}>Hola</Text>)
-  }
-  renderAdios(){
-    return(<Text style={{marginTop:60}}>Adios</Text>)
-  }
   render() {
-    console.log(this.state.Pressed)
     return (
-        <TouchableHighlight onPress={()=>this.pressFunction()}>
-          {this.state.Pressed?this.renderHola():this.renderAdios()}
-        </TouchableHighlight>
+      <App/>
     );
   }
 }
