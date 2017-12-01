@@ -75,10 +75,9 @@ export default class GameBoard extends Component {
 
       if (area && inputs.every(d => d !== area.id) && this.state.turn=="user") {
         this.setState({ userInputs: userInputs.concat(area.id), turn:"AI" })
-        
         setTimeout(() => {
-          this.AIAction()
-          this.judgeWinner()          
+          this.judgeWinner() 
+          this.AIAction()          
         }, 500)
       }
   }
@@ -90,16 +89,242 @@ export default class GameBoard extends Component {
     }
     while(true) {
       const inputs = userInputs.concat(AIInputs)
-
       const randomNumber = Math.round(Math.random() * 8.3)
-      if (inputs.every(d => d !== randomNumber)) {
-        this.setState({ AIInputs: AIInputs.concat(randomNumber), turn:"user" })
+      if((this.state.AIInputs.indexOf(0)!=-1 && this.state.AIInputs.indexOf(1)!=1)&& (this.state.AIInputs.indexOf(2)==-1 && this.state.userInputs.indexOf(2)==-1)){
+        this.setState({AIInputs: AIInputs.concat(2)})
+        this.judgeWinner()
+        break
+      }else if((this.state.AIInputs.indexOf(0)!=-1 && this.state.AIInputs.indexOf(2)!=-1)&& (this.state.AIInputs.indexOf(1)==-1 && this.state.userInputs.indexOf(1)==-1)){
+        this.setState({AIInputs: AIInputs.concat(1)})
+        this.judgeWinner()
+        break
+      }else if((this.state.AIInputs.indexOf(2)!=-1 && this.state.AIInputs.indexOf(1)!=-1)&& (this.state.AIInputs.indexOf(0)==-1 && this.state.userInputs.indexOf(0)==-1)){
+        this.setState({AIInputs: AIInputs.concat(0)})
         this.judgeWinner()
         break
       }
+      
+      else if((this.state.AIInputs.indexOf(0)!=-1 && this.state.AIInputs.indexOf(4)!=1)&& (this.state.AIInputs.indexOf(8)==-1 && this.state.userInputs.indexOf(8)==-1)){
+        this.setState({AIInputs: AIInputs.concat(8)})
+        this.judgeWinner()
+        break
+      }else if((this.state.AIInputs.indexOf(0)!=-1 && this.state.AIInputs.indexOf(8)!=-1)&& (this.state.AIInputs.indexOf(4)==-1 && this.state.userInputs.indexOf(4)==-1)){
+        this.setState({AIInputs: AIInputs.concat(4)})
+        this.judgeWinner()
+        break
+      }else if((this.state.AIInputs.indexOf(8)!=-1 && this.state.AIInputs.indexOf(4)!=-1)&& (this.state.AIInputs.indexOf(0)==-1 && this.state.userInputs.indexOf(0)==-1)){
+        this.setState({AIInputs: AIInputs.concat(0)})
+        this.judgeWinner()
+        break
+      }
+      
+      else if((this.state.AIInputs.indexOf(2)!=-1 && this.state.AIInputs.indexOf(4)!=1)&& (this.state.AIInputs.indexOf(6)==-1 && this.state.userInputs.indexOf(6)==-1)){
+        this.setState({AIInputs: AIInputs.concat(6)})
+        this.judgeWinner()
+        break
+      }else if((this.state.AIInputs.indexOf(2)!=-1 && this.state.AIInputs.indexOf(6)!=-1)&& (this.state.AIInputs.indexOf(4)==-1 && this.state.userInputs.indexOf(4)==-1)){
+        this.setState({AIInputs: AIInputs.concat(4)})
+        this.judgeWinner()
+        break
+      }else if((this.state.AIInputs.indexOf(6)!=-1 && this.state.AIInputs.indexOf(4)!=-1)&& (this.state.AIInputs.indexOf(2)==-1 && this.state.userInputs.indexOf(2)==-1)){
+        this.setState({AIInputs: AIInputs.concat(2)})
+        this.judgeWinner()
+        break
+      }
+      else if((this.state.AIInputs.indexOf(3)!=-1 && this.state.AIInputs.indexOf(4)!=1)&& (this.state.AIInputs.indexOf(5)==-1 && this.state.userInputs.indexOf(5)==-1)){
+        this.setState({AIInputs: AIInputs.concat(5)})
+        this.judgeWinner()
+        break
+      }else if((this.state.AIInputs.indexOf(3)!=-1 && this.state.AIInputs.indexOf(5)!=-1)&& (this.state.AIInputs.indexOf(4)==-1 && this.state.userInputs.indexOf(4)==-1)){
+        this.setState({AIInputs: AIInputs.concat(4)})
+        this.judgeWinner()
+        break
+      }else if((this.state.AIInputs.indexOf(5)!=-1 && this.state.AIInputs.indexOf(4)!=-1)&& (this.state.AIInputs.indexOf(3)==-1 && this.state.userInputs.indexOf(3)==-1)){
+        this.setState({AIInputs: AIInputs.concat(3)})
+        this.judgeWinner()
+        break
+      }
+      
+      else if((this.state.AIInputs.indexOf(6)!=-1 && this.state.AIInputs.indexOf(7)!=1)&& (this.state.AIInputs.indexOf(8)==-1 && this.state.userInputs.indexOf(8)==-1)){
+        this.setState({AIInputs: AIInputs.concat(8)})
+        this.judgeWinner()
+        break
+      }else if((this.state.AIInputs.indexOf(6)!=-1 && this.state.AIInputs.indexOf(8)!=-1)&& (this.state.AIInputs.indexOf(7)==-1 && this.state.userInputs.indexOf(7)==-1)){
+        this.setState({AIInputs: AIInputs.concat(7)})
+        this.judgeWinner()
+        break
+      }else if((this.state.AIInputs.indexOf(8)!=-1 && this.state.AIInputs.indexOf(6)!=-1)&& (this.state.AIInputs.indexOf(6)==-1 && this.state.userInputs.indexOf(6)==-1)){
+        this.setState({AIInputs: AIInputs.concat(6)})
+        this.judgeWinner()
+        break
+      }
+      
+      else if((this.state.AIInputs.indexOf(0)!=-1 && this.state.AIInputs.indexOf(3)!=1)&& (this.state.AIInputs.indexOf(6)==-1 && this.state.userInputs.indexOf(6)==-1)){
+        this.setState({AIInputs: AIInputs.concat(6)})
+        this.judgeWinner()
+        break
+      }else if((this.state.AIInputs.indexOf(0)!=-1 && this.state.AIInputs.indexOf(6)!=-1)&& (this.state.AIInputs.indexOf(3)==-1 && this.state.userInputs.indexOf(3)==-1)){
+        this.setState({AIInputs: AIInputs.concat(3)})
+        this.judgeWinner()
+        break
+      }else if((this.state.AIInputs.indexOf(6)!=-1 && this.state.AIInputs.indexOf(0)!=-1)&& (this.state.AIInputs.indexOf(0)==-1 && this.state.userInputs.indexOf(0)==-1)){
+        this.setState({AIInputs: AIInputs.concat(0)})
+        this.judgeWinner()
+        break
+      }
+      
+      else if((this.state.AIInputs.indexOf(1)!=-1 && this.state.AIInputs.indexOf(4)!=1)&& (this.state.AIInputs.indexOf(7)==-1 && this.state.userInputs.indexOf(7)==-1)){
+        this.setState({AIInputs: AIInputs.concat(7)})
+        this.judgeWinner()
+        break
+      }else if((this.state.AIInputs.indexOf(1)!=-1 && this.state.AIInputs.indexOf(7)!=-1)&& (this.state.AIInputs.indexOf(4)==-1 && this.state.userInputs.indexOf(4)==-1)){
+        this.setState({AIInputs: AIInputs.concat(4)})
+        this.judgeWinner()
+        break
+      }else if((this.state.AIInputs.indexOf(7)!=-1 && this.state.AIInputs.indexOf(4)!=-1)&& (this.state.AIInputs.indexOf(1)==-1 && this.state.userInputs.indexOf(1)==-1)){
+        this.setState({AIInputs: AIInputs.concat(1)})
+        this.judgeWinner()
+        break
+      }
+      
+      else if((this.state.AIInputs.indexOf(2)!=-1 && this.state.AIInputs.indexOf(5)!=1)&& (this.state.AIInputs.indexOf(8)==-1 && this.state.userInputs.indexOf(8)==-1)){
+        this.setState({AIInputs: AIInputs.concat(8)})
+        this.judgeWinner()
+        break
+      }else if((this.state.AIInputs.indexOf(2)!=-1 && this.state.AIInputs.indexOf(8)!=-1)&& (this.state.AIInputs.indexOf(5)==-1 && this.state.userInputs.indexOf(5)==-1)){
+        this.setState({AIInputs: AIInputs.concat(5)})
+        this.judgeWinner()
+        break
+      }else if((this.state.AIInputs.indexOf(8)!=-1 && this.state.AIInputs.indexOf(5)!=-1)&& (this.state.AIInputs.indexOf(2)==-1 && this.state.userInputs.indexOf(2)==-1)){
+        this.setState({AIInputs: AIInputs.concat(2)})
+        this.judgeWinner()
+        break
+      }else if((this.state.userInputs.indexOf(0)!=-1 && this.state.userInputs.indexOf(1)!=1)&& (this.state.AIInputs.indexOf(2)==-1 && this.state.userInputs.indexOf(2)==-1)){
+        this.setState({AIInputs: AIInputs.concat(2)})
+        this.judgeWinner()
+        break
+      }else if((this.state.userInputs.indexOf(0)!=-1 && this.state.userInputs.indexOf(2)!=-1)&& (this.state.AIInputs.indexOf(1)==-1 && this.state.userInputs.indexOf(1)==-1)){
+        this.setState({AIInputs: AIInputs.concat(1)})
+        this.judgeWinner()
+        break
+      }else if((this.state.userInputs.indexOf(2)!=-1 && this.state.userInputs.indexOf(1)!=-1)&& (this.state.AIInputs.indexOf(0)==-1 && this.state.userInputs.indexOf(0)==-1)){
+        this.setState({AIInputs: AIInputs.concat(0)})
+        this.judgeWinner()
+        break
+      }
+      
+      else if((this.state.userInputs.indexOf(0)!=-1 && this.state.userInputs.indexOf(4)!=1)&& (this.state.AIInputs.indexOf(8)==-1 && this.state.userInputs.indexOf(8)==-1)){
+        this.setState({AIInputs: AIInputs.concat(8)})
+        this.judgeWinner()
+        break
+      }else if((this.state.userInputs.indexOf(0)!=-1 && this.state.userInputs.indexOf(8)!=-1)&& (this.state.AIInputs.indexOf(4)==-1 && this.state.userInputs.indexOf(4)==-1)){
+        this.setState({AIInputs: AIInputs.concat(4)})
+        this.judgeWinner()
+        break
+      }else if((this.state.userInputs.indexOf(8)!=-1 && this.state.userInputs.indexOf(4)!=-1)&& (this.state.AIInputs.indexOf(0)==-1 && this.state.userInputs.indexOf(0)==-1)){
+        this.setState({AIInputs: AIInputs.concat(0)})
+        this.judgeWinner()
+        break
+      }
+      
+      else if((this.state.userInputs.indexOf(2)!=-1 && this.state.userInputs.indexOf(4)!=1)&& (this.state.AIInputs.indexOf(6)==-1 && this.state.userInputs.indexOf(6)==-1)){
+        this.setState({AIInputs: AIInputs.concat(6)})
+        this.judgeWinner()
+        break
+      }else if((this.state.userInputs.indexOf(2)!=-1 && this.state.userInputs.indexOf(6)!=-1)&& (this.state.AIInputs.indexOf(4)==-1 && this.state.userInputs.indexOf(4)==-1)){
+        this.setState({AIInputs: AIInputs.concat(4)})
+        this.judgeWinner()
+        break
+      }else if((this.state.userInputs.indexOf(6)!=-1 && this.state.userInputs.indexOf(4)!=-1)&& (this.state.AIInputs.indexOf(2)==-1 && this.state.userInputs.indexOf(2)==-1)){
+        this.setState({AIInputs: AIInputs.concat(2)})
+        this.judgeWinner()
+        break
+      }
+      else if((this.state.userInputs.indexOf(3)!=-1 && this.state.userInputs.indexOf(4)!=1)&& (this.state.AIInputs.indexOf(5)==-1 && this.state.userInputs.indexOf(5)==-1)){
+        this.setState({AIInputs: AIInputs.concat(5)})
+        this.judgeWinner()
+        break
+      }else if((this.state.userInputs.indexOf(3)!=-1 && this.state.userInputs.indexOf(5)!=-1)&& (this.state.AIInputs.indexOf(4)==-1 && this.state.userInputs.indexOf(4)==-1)){
+        this.setState({AIInputs: AIInputs.concat(4)})
+        this.judgeWinner()
+        break
+      }else if((this.state.userInputs.indexOf(5)!=-1 && this.state.userInputs.indexOf(4)!=-1)&& (this.state.AIInputs.indexOf(3)==-1 && this.state.userInputs.indexOf(3)==-1)){
+        this.setState({AIInputs: AIInputs.concat(3)})
+        this.judgeWinner()
+        break
+      }
+      
+      else if((this.state.userInputs.indexOf(6)!=-1 && this.state.userInputs.indexOf(7)!=1)&& (this.state.AIInputs.indexOf(8)==-1 && this.state.userInputs.indexOf(8)==-1)){
+        this.setState({AIInputs: AIInputs.concat(8)})
+        this.judgeWinner()
+        break
+      }else if((this.state.userInputs.indexOf(6)!=-1 && this.state.userInputs.indexOf(8)!=-1)&& (this.state.AIInputs.indexOf(7)==-1 && this.state.userInputs.indexOf(7)==-1)){
+        this.setState({AIInputs: AIInputs.concat(7)})
+        this.judgeWinner()
+        break
+      }else if((this.state.userInputs.indexOf(8)!=-1 && this.state.userInputs.indexOf(6)!=-1)&& (this.state.AIInputs.indexOf(6)==-1 && this.state.userInputs.indexOf(6)==-1)){
+        this.setState({AIInputs: AIInputs.concat(6)})
+        this.judgeWinner()
+        break
+      }
+      
+      else if((this.state.userInputs.indexOf(0)!=-1 && this.state.userInputs.indexOf(3)!=1)&& (this.state.AIInputs.indexOf(6)==-1 && this.state.userInputs.indexOf(6)==-1)){
+        this.setState({AIInputs: AIInputs.concat(6)})
+        this.judgeWinner()
+        break
+      }else if((this.state.userInputs.indexOf(0)!=-1 && this.state.userInputs.indexOf(6)!=-1)&& (this.state.AIInputs.indexOf(3)==-1 && this.state.userInputs.indexOf(3)==-1)){
+        this.setState({AIInputs: AIInputs.concat(3)})
+        this.judgeWinner()
+        break
+      }else if((this.state.userInputs.indexOf(6)!=-1 && this.state.userInputs.indexOf(0)!=-1)&& (this.state.AIInputs.indexOf(0)==-1 && this.state.userInputs.indexOf(0)==-1)){
+        this.setState({AIInputs: AIInputs.concat(0)})
+        this.judgeWinner()
+        break
+      }
+      
+      else if((this.state.userInputs.indexOf(1)!=-1 && this.state.userInputs.indexOf(4)!=1)&& (this.state.AIInputs.indexOf(7)==-1 && this.state.userInputs.indexOf(7)==-1)){
+        this.setState({AIInputs: AIInputs.concat(7)})
+        this.judgeWinner()
+        break
+      }else if((this.state.userInputs.indexOf(1)!=-1 && this.state.userInputs.indexOf(7)!=-1)&& (this.state.AIInputs.indexOf(4)==-1 && this.state.userInputs.indexOf(4)==-1)){
+        this.setState({AIInputs: AIInputs.concat(4)})
+        this.judgeWinner()
+        break
+      }else if((this.state.userInputs.indexOf(7)!=-1 && this.state.userInputs.indexOf(4)!=-1)&& (this.state.AIInputs.indexOf(1)==-1 && this.state.userInputs.indexOf(1)==-1)){
+        this.setState({AIInputs: AIInputs.concat(1)})
+        this.judgeWinner()
+        break
+      }
+      
+      else if((this.state.userInputs.indexOf(2)!=-1 && this.state.userInputs.indexOf(5)!=1)&& (this.state.AIInputs.indexOf(8)==-1 && this.state.userInputs.indexOf(8)==-1)){
+        this.setState({AIInputs: AIInputs.concat(8)})
+        this.judgeWinner()
+        break
+      }else if((this.state.userInputs.indexOf(2)!=-1 && this.state.userInputs.indexOf(8)!=-1)&& (this.state.AIInputs.indexOf(5)==-1 && this.state.userInputs.indexOf(5)==-1)){
+        this.setState({AIInputs: AIInputs.concat(5)})
+        this.judgeWinner()
+        break
+      }else if((this.state.userInputs.indexOf(8)!=-1 && this.state.userInputs.indexOf(5)!=-1)&& (this.state.AIInputs.indexOf(2)==-1 && this.state.userInputs.indexOf(2)==-1)){
+        this.setState({AIInputs: AIInputs.concat(2)})
+        this.judgeWinner()
+        break
+      }
+      
+      
+      else{
+        if (inputs.every(d => d !== randomNumber)) {
+          this.setState({ AIInputs: AIInputs.concat(randomNumber), turn:"user" })
+          this.judgeWinner()
+          console.log(this.state.AIInputs)
+          
+          break
+       }
+      }
+      
+      
     }
   }
-
+  
   componentDidMount() {
     this.restart()
   }
@@ -111,7 +336,6 @@ export default class GameBoard extends Component {
   judgeWinner() {
     const { userInputs, AIInputs, result } = this.state
     const inputs = userInputs.concat(AIInputs)
-
     if (inputs.length >= 5 ) {
       let res = this.isWinner(userInputs)
       if (res && result !== GAME_RESULT_USER) {
@@ -131,7 +355,6 @@ export default class GameBoard extends Component {
 
   render() {
     const { userInputs, AIInputs, result, turn } = this.state
-    console.log(turn)    
     return (
       <View style={styles.container}>
         <TouchableWithoutFeedback onPress={e => this.boardClickHandler(e)}>

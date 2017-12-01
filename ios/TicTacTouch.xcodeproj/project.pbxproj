@@ -981,7 +981,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Core.GameTicTacToe;
+				PRODUCT_BUNDLE_IDENTIFIER = Crazy;
 				PRODUCT_NAME = TicTacTouch;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos11.1;
@@ -1006,7 +1006,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Core.GameTicTacToe;
+				PRODUCT_BUNDLE_IDENTIFIER = Crazy;
 				PRODUCT_NAME = TicTacTouch;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos11.1;
