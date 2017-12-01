@@ -18,13 +18,13 @@ import {
 } from '../constants/game'
 import styles from './styles/gameBoard'
 import PromptArea from './PromptArea'
-
+const type_turn = ["user", "AI"]
 export default class GameBoard extends Component {
   state= {
     AIInputs: [],
     userInputs: [],
     result: 0,
-    round: 0
+    round: 0, 
   };
 
   constructor() {
@@ -33,10 +33,10 @@ export default class GameBoard extends Component {
       AIInputs: [],
       userInputs: [],
       result: GAME_RESULT_NO,
-      round: 0
+      round: 0,
+      turn:0
     }
   }
-
   restart() {
     const { round } = this.state
     this.setState({
@@ -51,7 +51,16 @@ export default class GameBoard extends Component {
       }
     }, 5)
   }
-
+  WhoStart(){
+    c=Math.floor(Math.random()*2)
+    if(c==1){
+      this.setState({turn:"user"})
+    }else if(c==0){
+      this.setState({turn:"AI"})
+    }else{
+      this.setState({turn:"user"})
+    }
+  }
   boardClickHandler(e) {
     const { locationX, locationY } = e.nativeEvent
     const { userInputs, AIInputs, result } = this.state
@@ -59,17 +68,18 @@ export default class GameBoard extends Component {
       return
     }
     const inputs = userInputs.concat(AIInputs)
-
+    this.WhoStart()
     const area = AREAS.find(d =>
       (locationX >= d.startX && locationX <= d.endX) &&
       (locationY >= d.startY && locationY <= d.endY))
 
-      if (area && inputs.every(d => d !== area.id)) {
-        this.setState({ userInputs: userInputs.concat(area.id) })
+      if (area && inputs.every(d => d !== area.id) && this.state.turn=="user") {
+        this.setState({ userInputs: userInputs.concat(area.id), turn:"AI" })
+        
         setTimeout(() => {
-          this.judgeWinner()
           this.AIAction()
-        }, 5)
+          this.judgeWinner()          
+        }, 500)
       }
   }
 
@@ -83,7 +93,7 @@ export default class GameBoard extends Component {
 
       const randomNumber = Math.round(Math.random() * 8.3)
       if (inputs.every(d => d !== randomNumber)) {
-        this.setState({ AIInputs: AIInputs.concat(randomNumber) })
+        this.setState({ AIInputs: AIInputs.concat(randomNumber), turn:"user" })
         this.judgeWinner()
         break
       }
@@ -120,7 +130,8 @@ export default class GameBoard extends Component {
   }
 
   render() {
-    const { userInputs, AIInputs, result } = this.state
+    const { userInputs, AIInputs, result, turn } = this.state
+    console.log(turn)    
     return (
       <View style={styles.container}>
         <TouchableWithoutFeedback onPress={e => this.boardClickHandler(e)}>
