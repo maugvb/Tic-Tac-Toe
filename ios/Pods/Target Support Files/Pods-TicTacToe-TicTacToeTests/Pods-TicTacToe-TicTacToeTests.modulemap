@@ -1,0 +1,6 @@
+module Pods_TicTacToe_TicTacToeTests {
+  umbrella header "Pods-TicTacToe-TicTacToeTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
