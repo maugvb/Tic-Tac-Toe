@@ -1,5 +1,7 @@
 
 import React, { Component } from 'react'
+import { Text } from "react-native";
+
 import {
   TouchableWithoutFeedback,
   View
@@ -20,16 +22,11 @@ import styles from './styles/gameBoard'
 import PromptArea from './PromptArea'
 const type_turn = ["user", "AI"]
 export default class GameBoard extends Component {
-  state= {
-    AIInputs: [],
-    userInputs: [],
-    result: 0,
-    round: 0, 
-  };
 
-  constructor() {
-    super()
-    this.state= {
+
+  constructor(props) {
+    super(props)
+    this.state = {
       AIInputs: [],
       userInputs: [],
       result: GAME_RESULT_NO,
@@ -37,9 +34,16 @@ export default class GameBoard extends Component {
             4,5,6,
             7,8,9],
       round: 0,
-      turn:0
+      turn: '',
     }
+    
+
   }
+
+
+  /**
+   * Restart Funtion
+   */
   restart() {
     const { round } = this.state
     this.setState({
@@ -49,24 +53,41 @@ export default class GameBoard extends Component {
       game:[1,2,3,
             4,5,6,
             7,8,9],
-      round: round + 1
+      round: round + 1,
+      turn: 'user'
     })
-    setTimeout(() => {
+
+    //this.WhoStart();
+    //^Por esto empezaba la maquina siempre
+    /*setTimeout(() => {
       if (round % 2 === 0) {
         this.AIAction()
       }
-    }, 5)
+    }, 5)*/
   }
+
+
+  /**
+   * WhoStartFunction
+   */
   WhoStart(){
-    c=Math.floor(Math.random()*2)
+    var c=Math.floor(Math.random()*2)
     if(c==1){
-      this.setState({turn:"user"})
+      this.setState({turn:'user'});
     }else if(c==0){
-      this.setState({turn:"AI"})
+      this.setState({turn:'AI'});
     }else{
-      this.setState({turn:"user"})
+      this.setState({turn:'user'});
     }
   }
+
+
+
+
+  /**
+   * boardClickHandler para tap en la pantalla, zona tocable
+   * @param {*} e 
+   */
   boardClickHandler(e) {
     //console.log("touhing");
     //console.log(this.state.turn);
@@ -76,24 +97,37 @@ export default class GameBoard extends Component {
       return
     }
     const inputs = userInputs.concat(AIInputs)
-    this.WhoStart()
+    //this.setState({turn: "user"});
+    //this.WhoStart()
     const area = AREAS.find(d =>
       (locationX >= d.startX && locationX <= d.endX) &&
       (locationY >= d.startY && locationY <= d.endY))
 
-      if (area && inputs.every(d => d !== area.id) && this.state.turn=="user") {
+      if (area && inputs.every(d => d !== area.id) && this.state.turn=='user') {
         let newMove = [...game];
 
         newMove[area.id]="O";
 
-        this.setState({ userInputs: userInputs.concat(area.id), turn:"AI", game: newMove }, ()=>{
-          this.judgeWinner() 
-          this.AIAction()          
+        
 
-        });
+        this.setState({userInputs: userInputs.concat(area.id), game: [...newMove], turn:"AI"}, () => {
+          this.judgeWinner();
+          setTimeout(() => {
+            this.AIAction()   }, 3000);
+          console.log("Turn: "+this.state.turn);
+        })
+
+
+                
       }
   }
 
+
+  /**
+   * Quien va ganando
+   * @param {*} game 
+   * @param {*} player 
+   */
   winning(game, player){
     if (
            (game[0] == player && game[1] == player && game[2] == player) ||
@@ -112,31 +146,28 @@ export default class GameBoard extends Component {
    }
 
 
-  //Function minimax returns
-  
+  /**
+   * Function minimax  returns the position selected
+   */
   minimax(newBoard, player){
   
    const { game } = this.state
 
     //available spots
-    var availSpots = this.emptyIndexies(game);
+    var availSpots = this.emptyIndexies(newBoard);
     //console.log("vacio"+availSpots)
     // checks for the terminal states such as win, lose, and tie and returning a value accordingly
-    //console.log("Null: " + this.winning(newBoard, "O"))
     if (this.winning(newBoard, "O")){
-      //console.log("hola1")
 
-       return {score:-10};
+       return -10;
     }
     else if (this.winning(newBoard, "X")){
-      //console.log("hola2")
-
-      return {score:10};
+      
+      return 10;
     }
     else if (availSpots.length == 0){
-      //console.log("hola3")
-
-      return {score:0};
+      
+      return 0;
     }
   // an array to collect all the objects
     var moves = [];
@@ -144,37 +175,41 @@ export default class GameBoard extends Component {
   //console.log(availSpots);
     // loop through available spots
     for (var i = 0; i < availSpots.length; i++){
+      var newBoardAI = [...newBoard];
       //create an object for each and store the index of that spot that was stored as a number in the object's index key
-      var move = {};
+      var move = {
+        index: 0,
+        score: 0
+      };
+      var scoreMini = 0;
 
-      move = newBoard[availSpots[i]];
+      var index = newBoardAI[availSpots[i]];
+      //move.index = i;
       // set the empty spot to the current player
-      newBoard[availSpots[i]] = player;
+      newBoardAI[availSpots[i]] = player;
 
       //if collect the score resulted from calling minimax on the opponent of the current player
       if (player == "X"){
-        var result = this.minimax(newBoard, "X");
-        move = result;
+        scoreMini = scoreMini + this.minimax(newBoardAI, "X");
+
       }
       else{
-        var result = this.minimax(newBoard, "O");
-        move = result;
+        scoreMini = scoreMini + this.minimax(newBoardAI, "O");
       }
       //console.log(move.score)
 
       //reset the spot to empty
-      newBoard[availSpots[i]] = move.index;
+      newBoardAI[availSpots[i]] = index+1;
   
 
       // push the object to the array
-      moves.push(move);
-      console.log("moves:"+ moves);
+      moves.push({score: scoreMini});
 
     }
   
-  // if it is the computer's turn loop over the moves and choose the move with the highest score
     var bestMove;
     if(player === "X"){
+      this.state.AIInputs
       var bestScore = -10000;
       for(var i = 0; i < moves.length; i++){
         if(moves[i].score > bestScore){
@@ -195,9 +230,13 @@ export default class GameBoard extends Component {
     }
   
   // return the chosen move (object) from the array to the higher depth
-    return bestMove;
+    return bestMove-1;
   }
 
+  /**
+   * Vacios
+   * @param {*} game 
+   */
   emptyIndexies(game){
     //console.log("Game en empty function"+game)
     //let empty = 0;
@@ -213,6 +252,9 @@ export default class GameBoard extends Component {
     return emptyArray;
   }
 
+  /**
+   * Accion de AI
+   */
   AIAction() {
     const { userInputs, AIInputs, result, game, turn } = this.state
     console.log("meter en:" + this.minimax(game, "X"));
@@ -228,7 +270,10 @@ export default class GameBoard extends Component {
   componentDidMount() {
     this.restart()
   }
-
+  /**
+   * Comprobar ganador
+   * @param {*} inputs 
+   */
   isWinner(inputs) {
   
     for(i=0;i<=CONDITIONS.length -1; i++){
@@ -239,15 +284,13 @@ export default class GameBoard extends Component {
       }
     return false;
   }
-
+  /**
+   * Juzgar Ganador
+   */
   judgeWinner() {
     const { userInputs, AIInputs, result, turn, game } = this.state
     const inputs = userInputs.concat(AIInputs)
-    if (turn == "AI"){
-      this.setState({turn:"user"})
-    }else{
-      this.setState({turn:"user"})
-    }
+  
     
     if (inputs.length >= 5 ) {
       
@@ -268,12 +311,12 @@ export default class GameBoard extends Component {
       this.setState({ result: GAME_RESULT_TIE })
     }
   }
-
+  /**
+   * Render
+   */
   render() {
-    const { userInputs, AIInputs, result, turn } = this.state
-    console.log("turno:"+turn);
-    console.log("Center points"+ JSON.stringify(CENTER_POINTS));
-    console.log("AIInputs"+ JSON.stringify(AIInputs));
+    const { userInputs, AIInputs, result, turn, game } = this.state
+    
     return (
       <View style={styles.container}>
         <TouchableWithoutFeedback onPress={e => this.boardClickHandler(e)}>
@@ -330,6 +373,12 @@ export default class GameBoard extends Component {
           </View>
         </TouchableWithoutFeedback>
         <PromptArea result={result} onRestart={() => this.restart()} />
+        <Text>
+          Turno:
+          {
+            this.state.turn
+          }
+        </Text>
       </View>
     )
   }
