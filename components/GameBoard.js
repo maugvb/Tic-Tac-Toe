@@ -113,9 +113,19 @@ export default class GameBoard extends Component {
         
 
         this.setState({userInputs: userInputs.concat(area.id), game: [...newMove], turn:"AI"}, () => {
-          this.judgeWinner();
-            this.AIAction()  
-          console.log("Turn: "+this.state.turn);
+
+
+            var gameResult = this.judgeWinner();
+            if(this.state.userInputs.length + this.state.AIInputs.length < 9){
+              this.AIAction() 
+              }        
+
+
+
+          //console.log(this.state.result)
+
+          
+          //console.log("Turn: "+this.state.turn);
         })
 
 
@@ -253,9 +263,9 @@ export default class GameBoard extends Component {
     //let empty = 0;
     var emptyArray = []
     
-    for(i=0; i<game.length; i++){
+    for(var i=0; i<game.length; i++){
       //console.log(isNaN(game[i]))
-      console.log()
+      //console.log()
 
       if(Number.isInteger(game[i])){
         emptyArray.push(game[i]);
@@ -270,12 +280,18 @@ export default class GameBoard extends Component {
    */
   AIAction() {
     const { userInputs, AIInputs, result, game, turn } = this.state
-    console.log("meter en:" + this.minimax(game, "X"));
+    if (result !== -1) {
+      return
+    }
+    //console.log("meter en:" + this.minimax(game, "X"));
     //console.log("game");
     let newMove;
     newMove = [...game];
     newMove[this.minimax(game, "X").index]="X"
-    this.setState({AIInputs: AIInputs.concat(this.minimax(game, "X").index), game: newMove,turn:"user"})
+    this.setState({AIInputs: AIInputs.concat(this.minimax(game, "X").index), game: newMove,turn:"user"}, 
+    () =>   this.judgeWinner() );
+    
+  
 
     
   }
@@ -287,10 +303,10 @@ export default class GameBoard extends Component {
    * Comprobar ganador
    * @param {*} inputs 
    */
-  isWinner(inputs) {
+  isWinner(inputs, player) {
   
-    for(i=0;i<=CONDITIONS.length -1; i++){
-        if(inputs[CONDITIONS[i][0]] == "O" && inputs[CONDITIONS[i][1]] == "O" && inputs[CONDITIONS[i][2]] == "O"){
+    for(var i=0;i<=CONDITIONS.length -1; i++){
+        if((inputs[CONDITIONS[i][0]] == player && inputs[CONDITIONS[i][1]] == player && inputs[CONDITIONS[i][2]] == player)){
           return true;
         }
       
@@ -300,28 +316,46 @@ export default class GameBoard extends Component {
   /**
    * Juzgar Ganador
    */
-  judgeWinner() {
+   judgeWinner() {
     const { userInputs, AIInputs, result, turn, game } = this.state
     const inputs = userInputs.concat(AIInputs)
   
     
     if (inputs.length >= 5 ) {
       
-      let res = this.isWinner(game)
+      let res = this.isWinner(game, "O")
       //console.log(res+"h");
       if (res && result !== GAME_RESULT_USER) {
-        return this.setState({ result: GAME_RESULT_USER })
+          this.setState({ result: GAME_RESULT_USER }, () => {
+            
+
+         })
       }
-      res = this.isWinner(game)
+
+      res = this.isWinner(game, "X")
       //console.log(res+"r");
 
       if (res && result !== GAME_RESULT_AI) {
-        return this.setState({ result: GAME_RESULT_AI })
+         this.setState({ result: GAME_RESULT_AI }, ()=>{
+          //(result);
+
+          this.forceUpdate();
+
+         })
+
       }
     }
     if (inputs.length === 9 &&
         result === GAME_RESULT_NO && result !== GAME_RESULT_TIE) {
-      this.setState({ result: GAME_RESULT_TIE })
+          //console.log(result);
+          this.setState({ result: GAME_RESULT_TIE }, ()=>{
+            //console.log(result);
+  
+            this.forceUpdate();
+  
+           })
+
+
     }
   }
   /**
@@ -332,7 +366,7 @@ export default class GameBoard extends Component {
     
     return (
       <View style={styles.container}>
-        <TouchableWithoutFeedback onPress={e => this.boardClickHandler(e)}>
+        <TouchableWithoutFeedback onPress={e => {{this.boardClickHandler(e)}}}>
           <View style={styles.board}>
             <View
               style={styles.line}
