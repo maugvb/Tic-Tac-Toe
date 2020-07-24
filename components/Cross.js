@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
         position:'absolute',
         width: 80,
         height: 80,
+        paddingBottom: 5
 
     },
     line1: {

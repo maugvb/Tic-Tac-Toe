@@ -35,6 +35,8 @@ export default class GameBoard extends Component {
             7,8,9],
       round: 0,
       turn: '',
+      moves: [],
+      depth: 0,
     }
     
 
@@ -54,7 +56,7 @@ export default class GameBoard extends Component {
             4,5,6,
             7,8,9],
       round: round + 1,
-      turn: 'user'
+      turn: 'user',
     })
 
     //this.WhoStart();
@@ -112,8 +114,7 @@ export default class GameBoard extends Component {
 
         this.setState({userInputs: userInputs.concat(area.id), game: [...newMove], turn:"AI"}, () => {
           this.judgeWinner();
-          setTimeout(() => {
-            this.AIAction()   }, 3000);
+            this.AIAction()  
           console.log("Turn: "+this.state.turn);
         })
 
@@ -158,16 +159,14 @@ export default class GameBoard extends Component {
     //console.log("vacio"+availSpots)
     // checks for the terminal states such as win, lose, and tie and returning a value accordingly
     if (this.winning(newBoard, "O")){
-
-       return -10;
+      return {score: -10};
     }
     else if (this.winning(newBoard, "X")){
-      
-      return 10;
+
+      return {score: 10};
     }
     else if (availSpots.length == 0){
-      
-      return 0;
+      return {score: 0};
     }
   // an array to collect all the objects
     var moves = [];
@@ -181,29 +180,41 @@ export default class GameBoard extends Component {
         index: 0,
         score: 0
       };
-      var scoreMini = 0;
+      var scoreTotal = {};
 
-      var index = newBoardAI[availSpots[i]];
+      var value = newBoardAI[availSpots[i]-1];
       //move.index = i;
       // set the empty spot to the current player
-      newBoardAI[availSpots[i]] = player;
+      newBoardAI[availSpots[i]-1] = player;
 
       //if collect the score resulted from calling minimax on the opponent of the current player
       if (player == "X"){
-        scoreMini = scoreMini + this.minimax(newBoardAI, "X");
+        this.setState({depth: this.state.depth++})
+        scoreTotal = this.minimax(newBoardAI, "O").score;
+        this.setState({depth: this.state.depth--})
+
+      /*   if(scoreTotal == -10 || scoreTotal == 10 || scoreTotal == 0){
+          return scoreTotal;
+        } */
 
       }
       else{
-        scoreMini = scoreMini + this.minimax(newBoardAI, "O");
+        this.setState({depth: this.state.depth++})
+        scoreTotal = this.minimax(newBoardAI, "X").score;
+        this.setState({depth: this.state.depth--})
+
+       /*  if(scoreTotal == -10 || scoreTotal == 10 || scoreTotal == 0){
+          return scoreTotal;
+        } */
       }
       //console.log(move.score)
 
       //reset the spot to empty
-      newBoardAI[availSpots[i]] = index+1;
+      newBoardAI[availSpots[i]-1] = value+1;
   
 
       // push the object to the array
-      moves.push({score: scoreMini});
+      moves.push({score: scoreTotal, index: value-1});
 
     }
   
@@ -212,9 +223,9 @@ export default class GameBoard extends Component {
       this.state.AIInputs
       var bestScore = -10000;
       for(var i = 0; i < moves.length; i++){
-        if(moves[i].score > bestScore){
+        if(moves[i].score > bestScore && Number.isInteger(this.state.game[moves[i].index])){
           bestScore = moves[i].score;
-          bestMove = i;
+          bestMove = moves[i];
         }
       }
     }else{
@@ -222,15 +233,15 @@ export default class GameBoard extends Component {
   // else loop over the moves and choose the move with the lowest score
       var bestScore = 10000;
       for(var i = 0; i < moves.length; i++){
-        if(moves[i].score < bestScore){
+        if(moves[i].score < bestScore && Number.isInteger(this.state.game[moves[i].index])){
           bestScore = moves[i].score;
-          bestMove = i;
+          bestMove = moves[i];
         }
       }
     }
   
   // return the chosen move (object) from the array to the higher depth
-    return bestMove-1;
+    return bestMove;
   }
 
   /**
@@ -244,8 +255,10 @@ export default class GameBoard extends Component {
     
     for(i=0; i<game.length; i++){
       //console.log(isNaN(game[i]))
-      if( Number.isInteger(game[i])){
-        emptyArray.push(i)
+      console.log()
+
+      if(Number.isInteger(game[i])){
+        emptyArray.push(game[i]);
       }
     }
     //console.log("empty"+emptyArray)
@@ -261,8 +274,8 @@ export default class GameBoard extends Component {
     //console.log("game");
     let newMove;
     newMove = [...game];
-    newMove[this.minimax(game, "X")]="X"
-    this.setState({AIInputs: AIInputs.concat(this.minimax(game, "X")), game: newMove,turn:"user"})
+    newMove[this.minimax(game, "X").index]="X"
+    this.setState({AIInputs: AIInputs.concat(this.minimax(game, "X").index), game: newMove,turn:"user"})
 
     
   }
